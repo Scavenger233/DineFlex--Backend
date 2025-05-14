@@ -20,20 +20,24 @@ public class AvailabilitySlot {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private LocalDate date;
 
+    @Column(nullable = false)
     private LocalTime time;
 
     @Enumerated(EnumType.STRING)
-    private SlotType type;
+    @Column(nullable = false)
+    private SlotType type; // EARLY_BIRD, REGULAR, LAST_MINUTE
 
+    @Column(nullable = false)
     private boolean isAvailable;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "offer_id")
-    private Offer offer;
+    private Offer offer; // nullable, only for earlyBird or lastMinute
 }
