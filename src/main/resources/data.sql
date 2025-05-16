@@ -5,10 +5,10 @@ VALUES
     (2, 'The Sizzling Grill', 'Dublin', 'Steakhouse', 'Premium steaks and grilled specials', '12 Castle Road, Dublin', '+353 1 234 5678', 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop', 'Mon-Sun: 12:00-22:00', TRUE, FALSE);
 
 -- === Insert customers ===
-INSERT INTO customer (id, customer_name, customer_email, phone)
+INSERT INTO customer (customer_name, customer_email, phone, password_hash)
 VALUES
-    (1, 'John Smith', 'john@example.com', '+353 87 123 4567'),
-    (2, 'Jane Doe', 'jane@example.com', '+353 87 987 6543');
+    ('John Smith', 'john@example.com', '+353 87 123 4567', 'hashedpassword1'),
+    ('Jane Doe', 'jane@example.com', '+353 87 987 6543', 'hashedpassword2');
 
 -- === Insert offers ===
 INSERT INTO offer (id, restaurant_id, type, title, description, available_from, available_to, discount)

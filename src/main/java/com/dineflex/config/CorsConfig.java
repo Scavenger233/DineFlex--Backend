@@ -14,7 +14,7 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
                 System.out.println("✅ CORS config running");
                 registry.addMapping("/**")
-                        .allowedOrigins("http://localhost:8082")  // Front end portal
+                        .allowedOrigins("http://localhost:8081")  // Front end portal
                         .allowedMethods("*")
                         .allowedHeaders("*")
                         .allowCredentials(true);

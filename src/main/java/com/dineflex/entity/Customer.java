@@ -26,4 +26,7 @@ public class Customer {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings;
+
+    @Column(nullable = false)
+    private String passwordHash;
 }

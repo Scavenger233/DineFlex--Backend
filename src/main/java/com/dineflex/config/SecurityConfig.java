@@ -20,6 +20,9 @@ public class SecurityConfig {
                 // Enable the CORS policy and use your custom method corsConfigurationSource() to provide specific rules.
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers
+                        .frameOptions(frame -> frame.disable()) // ✅ This disables the restriction completely
+                )
                 .authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
 
         return http.build();
