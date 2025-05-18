@@ -7,8 +7,8 @@ VALUES
 -- === Insert customers ===
 INSERT INTO customer (customer_name, customer_email, phone, password_hash)
 VALUES
-    ('John Smith', 'john@example.com', '+353 87 123 4567', 'hashedpassword1'),
-    ('Jane Doe', 'jane@example.com', '+353 87 987 6543', 'hashedpassword2');
+    ('John Smith', 'john@example.com', '+353 87 123 4567', '$2a$12$AuEZElogFpD3ko/eX5LQCuZ5D8a/hUSlv5rYh2tFf/Eh0ohTMNgOW'),
+    ('Jane Doe', 'jane@example.com', '+353 87 987 6543', '$2a$12$AuEZElogFpD3ko/eX5LQCuZ5D8a/hUSlv5rYh2tFf/Eh0ohTMNgOW');
 
 -- === Insert offers ===
 INSERT INTO offer (id, restaurant_id, type, title, description, available_from, available_to, discount)

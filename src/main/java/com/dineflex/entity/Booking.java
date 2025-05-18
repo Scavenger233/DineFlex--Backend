@@ -29,7 +29,7 @@ public class Booking {
     @Enumerated(EnumType.STRING)
     private BookingStatus status;
 
-    @Column(unique = true)
+    @Column(name = "confirmation_code", nullable = false, unique = true)
     private String confirmationCode;
 
     @ManyToOne

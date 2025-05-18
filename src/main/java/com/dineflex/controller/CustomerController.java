@@ -5,23 +5,27 @@ import com.dineflex.dto.request.CustomerRegisterRequest;
 import com.dineflex.dto.response.CustomerInfoResponse;
 import com.dineflex.service.CustomerService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/customers")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:8081")
+@CrossOrigin(origins = {"http://localhost:8081", "http://localhost:3000"})
 public class CustomerController {
 
     private final CustomerService customerService;
 
     @PostMapping("/register")
-    public CustomerInfoResponse register(@RequestBody CustomerRegisterRequest request) {
-        return customerService.register(request);
+    public ResponseEntity<CustomerInfoResponse> register(@RequestBody CustomerRegisterRequest request) {
+        CustomerInfoResponse response = customerService.register(request);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/login")
-    public CustomerInfoResponse login(@RequestBody CustomerLoginRequest request) {
-        return customerService.login(request);
+    public ResponseEntity<CustomerInfoResponse> login(@RequestBody CustomerLoginRequest request) {
+        CustomerInfoResponse response = customerService.login(request);
+        return ResponseEntity.ok(response);
     }
+
 }

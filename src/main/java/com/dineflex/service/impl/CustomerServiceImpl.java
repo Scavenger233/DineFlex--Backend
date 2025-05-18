@@ -9,20 +9,26 @@ import com.dineflex.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
     private final CustomerRepository customerRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
 
     @Override
     public CustomerInfoResponse register(CustomerRegisterRequest request) {
-        Customer customer = new Customer();
-        customer.setCustomerName(request.getCustomerName());
-        customer.setCustomerEmail(request.getCustomerEmail());
-        customer.setPhone(request.getPhone());
-        customer.setPasswordHash(BCrypt.hashpw(request.getPassword(), BCrypt.gensalt()));
+        Customer customer = Customer.builder()
+                .customerName(request.getCustomerName())
+                .customerEmail(request.getCustomerEmail())
+                .phone(request.getPhone())
+                .passwordHash(passwordEncoder.encode(request.getPassword()))
+                .build();
+
         customerRepository.save(customer);
 
         return CustomerInfoResponse.fromEntity(customer);
