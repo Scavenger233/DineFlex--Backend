@@ -39,15 +39,12 @@ public class Restaurant {
 
     private boolean hasLastMinute;
 
-    // 关联关系：一对多（餐厅 → offers）
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Offer> offers;
 
-    // 餐厅拥有多个时间段（slot）
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AvailabilitySlot> availabilitySlots;
 
-    // 餐厅拥有多个预订
     @OneToMany(mappedBy = "restaurant", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Booking> bookings;
 }
