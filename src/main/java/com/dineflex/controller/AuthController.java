@@ -8,6 +8,7 @@ import com.dineflex.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import com.dineflex.exception.InvalidCredentialsException;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -27,7 +28,7 @@ public class AuthController {
         if (passwordEncoder.matches(loginRequest.getPassword(), customer.getPasswordHash())) {
             return jwtUtil.generateToken(customer.getCustomerEmail());
         } else {
-            throw new RuntimeException("Invalid password");
+            throw new InvalidCredentialsException("Email or password is incorrect.");
         }
     }
 }

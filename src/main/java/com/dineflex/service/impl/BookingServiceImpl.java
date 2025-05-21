@@ -5,6 +5,7 @@ import com.dineflex.dto.response.BookingResponse;
 import com.dineflex.entity.*;
 import com.dineflex.entity.enums.BookingStatus;
 import com.dineflex.entity.enums.BookingStatus;
+import com.dineflex.exception.UserNotFoundException;
 import com.dineflex.repository.*;
 import com.dineflex.service.BookingService;
 import lombok.RequiredArgsConstructor;
@@ -24,17 +25,18 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public BookingResponse createBooking(BookingRequest request) {
+    public Booking createBooking(BookingRequest request) {
         System.out.println("📨 [Booking Start] Email from frontend: " + request.getCustomerEmail());
 
         Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
-                .orElseThrow(() -> new IllegalArgumentException("❌ Restaurant not found: ID " + request.getRestaurantId()));
+                .orElseThrow(() -> new RuntimeException("Restaurant not found"));
 
         System.out.println("✅ Found restaurant: " + restaurant.getName());
 
         System.out.println("🔍 Checking if customer exists in DB for email: " + request.getCustomerEmail());
+
         Customer customer = customerRepository.findByCustomerEmail(request.getCustomerEmail())
-                .orElseThrow(() -> new IllegalArgumentException("❌ Customer not found. Please log in first."));
+                .orElseThrow(() -> new UserNotFoundException("Customer not found"));
 
         System.out.println("✅ Customer found: ID=" + customer.getId() + ", Name=" + customer.getCustomerName());
 
@@ -45,10 +47,10 @@ public class BookingServiceImpl implements BookingService {
 
         AvailabilitySlot slot = availabilitySlotRepository
                 .findByRestaurantIdAndDateAndTime(request.getRestaurantId(), date, time)
-                .orElseThrow(() -> new IllegalArgumentException("❌ Slot not found for restaurant ID=" + request.getRestaurantId() + ", date=" + date + ", time=" + time));
+                .orElseThrow(() -> new RuntimeException("Slot not found"));
 
         if (!slot.isAvailable()) {
-            throw new IllegalStateException("❌ Slot already booked at " + time);
+            throw new RuntimeException("Slot not available");
         }
 
         System.out.println("✅ Slot available. Proceeding with booking...");
@@ -67,11 +69,8 @@ public class BookingServiceImpl implements BookingService {
                 .confirmationCode("DINE" + System.currentTimeMillis())
                 .build();
 
-        Booking saved = bookingRepository.save(booking);
 
-        System.out.println("✅ Booking successful! Booking ID=" + saved.getId() + ", Confirmation Code=" + saved.getConfirmationCode());
-
-        return BookingResponse.fromEntity(saved);
+        return bookingRepository.save(booking);
     }
 
 

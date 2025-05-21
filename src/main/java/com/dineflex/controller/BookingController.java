@@ -2,10 +2,12 @@ package com.dineflex.controller;
 
 import com.dineflex.dto.request.BookingRequest;
 import com.dineflex.dto.response.BookingResponse;
+import com.dineflex.entity.Booking;
 import com.dineflex.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import com.dineflex.entity.Booking;
 
 @RestController
 @RequestMapping("/api/bookings")
@@ -16,7 +18,9 @@ public class BookingController {
 
     @PostMapping
     public ResponseEntity<BookingResponse> createBooking(@RequestBody BookingRequest request) {
-        return ResponseEntity.ok(bookingService.createBooking(request));
+        Booking booking = bookingService.createBooking(request);
+        BookingResponse response = BookingResponse.fromEntity(booking);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
