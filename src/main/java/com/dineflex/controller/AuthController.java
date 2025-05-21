@@ -2,6 +2,7 @@ package com.dineflex.controller;
 
 import com.dineflex.dto.request.LoginRequest;
 import com.dineflex.dto.request.LoginRequest;
+import com.dineflex.dto.response.LoginResponse;
 import com.dineflex.entity.Customer;
 import com.dineflex.repository.CustomerRepository;
 import com.dineflex.security.JwtUtil;
@@ -20,13 +21,19 @@ public class AuthController {
     private final CustomerRepository customerRepository;
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
+    public LoginResponse login(@RequestBody LoginRequest loginRequest) {
         // Search for customers
-        Customer customer = customerRepository.findByCustomerEmail(loginRequest.getEmail())
+        Customer customer = customerRepository.findByCustomerEmail(loginRequest.getCustomerEmail())
                 .orElseThrow(() -> new RuntimeException("User not found"));
         // Verifying passwords
         if (passwordEncoder.matches(loginRequest.getPassword(), customer.getPasswordHash())) {
-            return jwtUtil.generateToken(customer.getCustomerEmail());
+            String token = jwtUtil.generateToken(customer.getCustomerEmail());
+
+            return LoginResponse.builder()
+                    .token(token)
+                    .customerName(customer.getCustomerName())
+                    .customerEmail(customer.getCustomerEmail())
+                    .build();
         } else {
             throw new InvalidCredentialsException("Email or password is incorrect.");
         }
