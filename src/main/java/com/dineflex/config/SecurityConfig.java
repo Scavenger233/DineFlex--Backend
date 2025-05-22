@@ -57,14 +57,20 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:8081"));  // Allowed to visit this address
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); //Allowed methods
-        config.setAllowedHeaders(List.of("*")); //Allowed all request header
-        config.setAllowCredentials(true);  // Allow requests with cookies (can be set to false if using JWT)
+
+        // ✅ 添加多个来源，包括本地和 vercel
+        config.setAllowedOrigins(List.of(
+                "http://localhost:8081",
+                "https://dine-flex-frontend.vercel.app"
+        ));
+
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowCredentials(true);
         config.setExposedHeaders(List.of("Authorization"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config);  // Applies to all URL paths
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 
