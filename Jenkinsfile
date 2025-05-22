@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "scavenger233/dineflex-backend"
+        DOCKER_IMAGE = "pocky2333/dineflex-backend"
         DOCKER_CREDENTIALS_ID = "dockerhub"
     }
 
