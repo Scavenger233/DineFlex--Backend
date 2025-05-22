@@ -34,53 +34,72 @@ public class MockDataLoader implements CommandLineRunner {
         // Add restaurants
         List<Restaurant> restaurants = List.of(
                 Restaurant.builder().name("The Sizzling Grill").location("Dublin").cuisine("Steakhouse")
-                        .description("Description for The Sizzling Grill").address("Address for The Sizzling Grill")
+                        .description("Sizzling steaks and grilled favorites served in a lively setting.")
+                        .address("12 Castle Street, Dublin, Ireland")
                         .phone("+353 1 000 0000")
                         .thumbnailUrl("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop")
                         .openingHours("Mon-Sun: 12:00-22:00").hasEarlyBird(true).hasLastMinute(false).build(),
+
                 Restaurant.builder().name("Bella Italia").location("Cork").cuisine("Italian")
-                        .description("Description for Bella Italia").address("Address for Bella Italia")
-                        .phone("+353 1 000 0000")
+                        .description("Classic Italian dishes with a modern twist, right in the heart of Cork.")
+                        .address("15 Oliver Plunkett Street, Cork, Ireland")
+                        .phone("+353 21 000 0000")
                         .thumbnailUrl("https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&auto=format&fit=crop")
                         .openingHours("Mon-Sun: 12:00-22:00").hasEarlyBird(false).hasLastMinute(true).build(),
+
                 Restaurant.builder().name("Sushi Zen").location("Galway").cuisine("Japanese")
-                        .description("Description for Sushi Zen").address("Address for Sushi Zen")
-                        .phone("+353 1 000 0000")
+                        .description("Fresh sushi and traditional Japanese cuisine in a minimalist setting.")
+                        .address("5 Eyre Square, Galway, Ireland")
+                        .phone("+353 91 000 0000")
                         .thumbnailUrl("https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&auto=format&fit=crop")
                         .openingHours("Mon-Sun: 12:00-22:00").hasEarlyBird(true).hasLastMinute(true).build(),
+
                 Restaurant.builder().name("Tapas Bar").location("Limerick").cuisine("Spanish")
-                        .description("Description for Tapas Bar").address("Address for Tapas Bar")
-                        .phone("+353 1 000 0000")
+                        .description("Authentic Spanish tapas and wines in a cozy downtown atmosphere.")
+                        .address("22 O'Connell Street, Limerick, Ireland")
+                        .phone("+353 61 000 0000")
                         .thumbnailUrl("https://images.unsplash.com/photo-1515669097368-22e68427d265?w=800&auto=format&fit=crop")
                         .openingHours("Mon-Sun: 12:00-22:00").hasEarlyBird(false).hasLastMinute(false).build(),
+
                 Restaurant.builder().name("The Curry House").location("Waterford").cuisine("Indian")
-                        .description("Description for The Curry House").address("Address for The Curry House")
-                        .phone("+353 1 000 0000")
+                        .description("Rich, flavorful Indian curries and tandoori specials in a vibrant setting.")
+                        .address("34 John Street, Waterford, Ireland")
+                        .phone("+353 51 000 0000")
                         .thumbnailUrl("https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=800&auto=format&fit=crop")
                         .openingHours("Mon-Sun: 12:00-22:00").hasEarlyBird(true).hasLastMinute(false).build(),
+
                 Restaurant.builder().name("Fish & Chips Co.").location("Sligo").cuisine("Seafood")
-                        .description("Description for Fish & Chips Co.").address("Address for Fish & Chips Co.")
-                        .phone("+353 1 000 0000")
+                        .description("Freshly caught seafood and traditional fish & chips by the seaside.")
+                        .address("3 Rockwood Parade, Sligo, Ireland")
+                        .phone("+353 71 000 0000")
                         .thumbnailUrl("https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?w=800&auto=format&fit=crop")
                         .openingHours("Mon-Sun: 12:00-22:00").hasEarlyBird(false).hasLastMinute(true).build(),
+
                 Restaurant.builder().name("Burger Palace").location("Killarney").cuisine("American")
-                        .description("Description for Burger Palace").address("Address for Burger Palace")
-                        .phone("+353 1 000 0000")
+                        .description("Gourmet burgers with locally sourced ingredients and bold flavors.")
+                        .address("10 Plunkett Street, Killarney, Ireland")
+                        .phone("+353 64 000 0000")
                         .thumbnailUrl("https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=800&auto=format&fit=crop")
                         .openingHours("Mon-Sun: 12:00-22:00").hasEarlyBird(true).hasLastMinute(true).build(),
+
                 Restaurant.builder().name("Pizza Express").location("Dundalk").cuisine("Pizza")
-                        .description("Description for Pizza Express").address("Address for Pizza Express")
-                        .phone("+353 1 000 0000")
+                        .description("Wood-fired pizzas made to order with fresh, authentic toppings.")
+                        .address("Park Street, Dundalk, County Louth, Ireland")
+                        .phone("+353 42 000 0000")
                         .thumbnailUrl("https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=800&auto=format&fit=crop")
                         .openingHours("Mon-Sun: 12:00-22:00").hasEarlyBird(false).hasLastMinute(false).build(),
+
                 Restaurant.builder().name("Thai Orchid").location("Athlone").cuisine("Thai")
-                        .description("Description for Thai Orchid").address("Address for Thai Orchid")
-                        .phone("+353 1 000 0000")
+                        .description("Elegant Thai dining experience with fragrant spices and exotic dishes.")
+                        .address("Church Street, Athlone, Ireland")
+                        .phone("+353 90 000 0000")
                         .thumbnailUrl("https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=800&auto=format&fit=crop")
                         .openingHours("Mon-Sun: 12:00-22:00").hasEarlyBird(true).hasLastMinute(false).build(),
+
                 Restaurant.builder().name("Mexican Fiesta").location("Wexford").cuisine("Mexican")
-                        .description("Description for Mexican Fiesta").address("Address for Mexican Fiesta")
-                        .phone("+353 1 000 0000")
+                        .description("A lively spot for tacos, burritos, and margaritas with a kick.")
+                        .address("The Quay, Wexford, Ireland")
+                        .phone("+353 53 000 0000")
                         .thumbnailUrl("https://images.unsplash.com/photo-1613514785940-daed07799d9b?w=800&auto=format&fit=crop")
                         .openingHours("Mon-Sun: 12:00-22:00").hasEarlyBird(false).hasLastMinute(true).build()
         );
