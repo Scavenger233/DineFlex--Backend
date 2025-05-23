@@ -2,6 +2,7 @@ package com.dineflex.security;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -10,6 +11,8 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
+    @Value("${dineflex.jwt.secret}")
+    private String jwtSecret;
     private final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private final long expirationMillis = 3600_000; // 1 hour
 

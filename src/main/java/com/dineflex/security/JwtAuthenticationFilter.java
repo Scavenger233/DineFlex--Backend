@@ -25,29 +25,36 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain filterChain) throws ServletException, IOException {
 
+        System.out.println("🔔 Jwt Filter triggered for: " + request.getMethod() + " " + request.getRequestURI());
+
+        System.out.println("✅ JWT Filter loaded and active");
+
         String path = request.getRequestURI();
+        System.out.println("➡️ [JWT Filter] Request URI: " + path);
 
         if (path.startsWith("/api/auth") || path.startsWith("/api/customers/register")) {
-            // 👉 Bypass JWT authentication for login and register
+            System.out.println("🟢 [JWT Filter] Skipping auth for public endpoint.");
             filterChain.doFilter(request, response);
             return;
         }
 
-        System.out.println("➡️ JWT Filter triggered: " + request.getRequestURI());
-
         String authHeader = request.getHeader("Authorization");
+        System.out.println("🔎 [JWT Filter] Authorization header: " + authHeader);
 
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            filterChain.doFilter(request, response); // Skip proceeding to other filters
+            System.out.println("⚠️ [JWT Filter] No Bearer token found. Proceeding unauthenticated.");
+            filterChain.doFilter(request, response);
             return;
         }
 
         String token = authHeader.substring(7);
-
         String email = jwtUtil.extractUsername(token);
+
+        System.out.println("📧 [JWT Filter] Extracted email from token: " + email);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             if (jwtUtil.isTokenValid(token)) {
+                System.out.println("✅ [JWT Filter] Token valid. Setting security context.");
 
                 UsernamePasswordAuthenticationToken authenticationToken =
                         new UsernamePasswordAuthenticationToken(
@@ -57,7 +64,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request));
 
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            } else {
+                System.out.println("❌ [JWT Filter] Invalid token.");
             }
+        } else {
+            System.out.println("⚠️ [JWT Filter] Email null or authentication already exists.");
         }
 
         filterChain.doFilter(request, response);
