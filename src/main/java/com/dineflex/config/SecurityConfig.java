@@ -40,6 +40,7 @@ public class SecurityConfig {
                         .requestMatchers(
                                 "/api/auth/**",                 // Fetch login token
                                 "/api/customers/register",      // register
+                                "/api/restaurants",
                                 "/api/restaurants/**",          // Restaurant related interfaces
                                 "/api/offers/**",               // offers
                                 "/api/availability/**",         // fetch available slots
@@ -58,7 +59,6 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // ✅ 添加多个来源，包括本地和 vercel
         config.setAllowedOrigins(List.of(
                 "http://localhost:8081",
                 "https://dine-flex-frontend.vercel.app"
