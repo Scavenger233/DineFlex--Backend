@@ -32,28 +32,36 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                                         HttpServletResponse response,
                                         Authentication authentication)
             throws IOException, ServletException {
+        try {
+            OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+            String email = oAuth2User.getAttribute("email");
+            String name = oAuth2User.getAttribute("name");
 
-        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
-        String email = oAuth2User.getAttribute("email");
-        String name = oAuth2User.getAttribute("name");
+            System.out.println("OAuth2 login success. Email: " + email + ", Name: " + name);
 
-        // Auto-register or fetch user
-        Customer customer = customerRepository.findByCustomerEmail(email)
-                .orElseGet(() -> {
-                    Customer newCustomer = Customer.builder()
-                            .customerName(name)
-                            .customerEmail(email)
-                            .phone("N/A") // or prompt frontend later
-                            .passwordHash("OAUTH2_USER") // mark as external user
-                            .build();
-                    return customerRepository.save(newCustomer);
-                });
+            // Auto-register or fetch user
+            Customer customer = customerRepository.findByCustomerEmail(email)
+                    .orElseGet(() -> {
+                        Customer newCustomer = Customer.builder()
+                                .customerName(name != null ? name : "GoogleUser")
+                                .customerEmail(email)
+                                .phone("N/A")
+                                .passwordHash("OAUTH2_USER")
+                                .build();
+                        System.out.println("Registering new customer: " + email);
+                        return customerRepository.save(newCustomer);
+                    });
 
-        // Create JWT token
-        String token = jwtUtil.generateToken(email);
+            String token = jwtUtil.generateToken(email);
+            System.out.println("Generated token: " + token);
 
-        // Redirect with token to frontend
-        String redirectUrl = REDIRECT_URI + "?token=" + URLEncoder.encode(token, StandardCharsets.UTF_8);
-        response.sendRedirect(redirectUrl);
+            String redirectUrl = REDIRECT_URI + "?token=" + URLEncoder.encode(token, StandardCharsets.UTF_8);
+            response.sendRedirect(redirectUrl);
+
+        } catch (Exception e) {
+            e.printStackTrace(); // This will be visible in Render logs
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "OAuth2 login error: " + e.getMessage());
+        }
     }
+
 }
