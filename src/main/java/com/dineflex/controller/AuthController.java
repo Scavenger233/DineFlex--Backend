@@ -7,6 +7,9 @@ import com.dineflex.entity.Customer;
 import com.dineflex.repository.CustomerRepository;
 import com.dineflex.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import com.dineflex.exception.InvalidCredentialsException;
@@ -38,4 +41,13 @@ public class AuthController {
             throw new InvalidCredentialsException("Email or password is incorrect.");
         }
     }
+
+    @GetMapping("/api/customers/me")
+    public ResponseEntity<Customer> getCurrentCustomer(Authentication authentication) {
+        String email = authentication.getName(); // comes from the JWT's subject
+        return customerRepository.findByCustomerEmail(email)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    }
+
 }
