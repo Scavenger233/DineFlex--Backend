@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a700c478-2b5c-41c5-a1bc-2ba77d028e4c" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="Use Maven wrapper" />
+        <option name="useMavenConfig" value="true" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="ProjectId" id="2wujbBGWRXBAams6NnANJxi8pzf" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Notification.DisplayName-DoNotAsk-Download Shared Index": "Shared indexes available",
+    "Notification.DoNotAsk-Download Shared Index": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/pocky2333/Projects/dineflex-backend",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.splitter.proportion": "0.24096386",
+    "spring.configuration.checksum": "336a45175c8897544f87acb22ae3c248",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CreateClassDialog.RecentsKey">
+      <recent name="com.dineflex.exception" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.DineflexApplication">
+    <configuration name="LombokTest" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.dineflex.test.LombokTest" />
+      <module name="dineflex-backend" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.dineflex.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="DineflexApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="dineflex-backend" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.dineflex.DineflexApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.LombokTest" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a700c478-2b5c-41c5-a1bc-2ba77d028e4c" name="Changes" comment="" />
+      <created>1746898422605</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1746898422605</updated>
+      <workItem from="1746898424545" duration="7910000" />
+      <workItem from="1746952778427" duration="2309000" />
+      <workItem from="1746955119339" duration="235000" />
+      <workItem from="1746955386834" duration="124000" />
+      <workItem from="1746955526431" duration="132000" />
+      <workItem from="1746955671266" duration="105000" />
+      <workItem from="1746955796148" duration="1292000" />
+      <workItem from="1746967124401" duration="373000" />
+      <workItem from="1746967508102" duration="19365000" />
+      <workItem from="1747306582579" duration="28494000" />
+      <workItem from="1747590390835" duration="13862000" />
+      <workItem from="1747743368491" duration="663000" />
+      <workItem from="1747744041643" duration="287000" />
+      <workItem from="1747821569536" duration="14394000" />
+      <workItem from="1747849220216" duration="12695000" />
+      <workItem from="1747996055965" duration="13748000" />
+      <workItem from="1748178106987" duration="27882000" />
+      <workItem from="1748436138447" duration="163000" />
+      <workItem from="1748445396328" duration="1373000" />
+      <workItem from="1773231278172" duration="8022000" />
+      <workItem from="1773861116028" duration="1196000" />
+      <workItem from="1775212417038" duration="1014000" />
+      <workItem from="1775297972909" duration="3482000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>
