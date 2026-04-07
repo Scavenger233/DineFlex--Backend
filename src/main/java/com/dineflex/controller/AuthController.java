@@ -42,8 +42,11 @@ public class AuthController {
         }
     }
 
-    @GetMapping("/api/customers/me")
+    @GetMapping("/customers/me")
     public ResponseEntity<Customer> getCurrentCustomer(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
         String email = authentication.getName(); // comes from the JWT's subject
         return customerRepository.findByCustomerEmail(email)
                 .map(ResponseEntity::ok)
