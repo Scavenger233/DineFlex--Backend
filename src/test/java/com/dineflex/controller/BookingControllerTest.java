@@ -4,6 +4,7 @@ import com.dineflex.dto.request.BookingRequest;
 import com.dineflex.dto.response.BookingResponse;
 import com.dineflex.entity.*;
 import com.dineflex.entity.enums.BookingStatus;
+import com.dineflex.exception.UserNotFoundException;
 import com.dineflex.security.JwtAuthenticationFilter;
 import com.dineflex.service.BookingService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -155,5 +156,24 @@ class BookingControllerTest {
 
         mockMvc.perform(get("/api/bookings/99"))
                 .andExpect(status().isInternalServerError());
+    }
+
+    @Test
+    void createBooking_shouldReturn404_whenUserNotFound() throws Exception {
+        BookingRequest request = BookingRequest.builder()
+                .restaurantId(1L)
+                .customerEmail("notfound@example.com")
+                .date("2026-06-01")
+                .time("18:00")
+                .partySize(2)
+                .build();
+
+        when(bookingService.createBooking(any()))
+                .thenThrow(new UserNotFoundException("Customer not found"));
+
+        mockMvc.perform(post("/api/bookings")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound());
     }
 }
