@@ -1,2 +1,4 @@
-package com.dineflex.dto.request;public class CustomerLoginRequestTest {
+package com.dineflex.dto.request;
+
+public class CustomerLoginRequestTest {
 }

@@ -1,9 +1,8 @@
 package com.dineflex.controller;
 
-import com.dineflex.dto.request.CustomerLoginRequest;
 import com.dineflex.dto.request.CustomerRegisterRequest;
 import com.dineflex.dto.response.CustomerInfoResponse;
-import com.dineflex.repository.CustomerRepository;
+import com.dineflex.exception.UserNotFoundException;
 import com.dineflex.security.JwtAuthenticationFilter;
 import com.dineflex.service.CustomerService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,12 +15,17 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.http.MediaType;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.util.Collections;
+
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -49,8 +53,7 @@ class CustomerControllerTest {
     @MockitoBean
     private CustomerService customerService;
 
-    @MockitoBean
-    private CustomerRepository customerRepository;
+    // ───── register() ─────
 
     @Test
     void register_shouldReturn200_whenValidRequest() throws Exception {
@@ -95,40 +98,10 @@ class CustomerControllerTest {
                 .andExpect(status().isInternalServerError());
     }
 
+    // ───── getCurrentCustomer() ─────
     @Test
-    void login_shouldReturn200_whenValidCredentials() throws Exception {
-        CustomerLoginRequest request = new CustomerLoginRequest();
-        request.setCustomerEmail("test@example.com");
-        request.setPassword("password123");
-
-        CustomerInfoResponse response = CustomerInfoResponse.builder()
-                .id(1L)
-                .customerName("Test User")
-                .customerEmail("test@example.com")
-                .build();
-
-        when(customerService.login(any())).thenReturn(response);
-
-        mockMvc.perform(post("/api/customers/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.customerEmail").value("test@example.com"))
-                .andExpect(jsonPath("$.customerName").value("Test User"));
-    }
-
-    @Test
-    void login_shouldReturn500_whenInvalidCredentials() throws Exception {
-        CustomerLoginRequest request = new CustomerLoginRequest();
-        request.setCustomerEmail("test@example.com");
-        request.setPassword("wrongpassword");
-
-        when(customerService.login(any()))
-                .thenThrow(new RuntimeException("Invalid password"));
-
-        mockMvc.perform(post("/api/customers/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isInternalServerError());
+    void getCurrentCustomer_shouldReturn401_whenNotAuthenticated() throws Exception {
+        mockMvc.perform(get("/api/customers/me"))
+                .andExpect(status().isUnauthorized());
     }
 }

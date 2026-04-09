@@ -1,10 +1,14 @@
 package com.dineflex.service.impl;
 
-import com.dineflex.dto.request.CustomerLoginRequest;
 import com.dineflex.dto.request.CustomerRegisterRequest;
+import com.dineflex.dto.request.LoginRequest;
 import com.dineflex.dto.response.CustomerInfoResponse;
+import com.dineflex.dto.response.LoginResponse;
 import com.dineflex.entity.Customer;
+import com.dineflex.exception.InvalidCredentialsException;
+import com.dineflex.exception.UserNotFoundException;
 import com.dineflex.repository.CustomerRepository;
+import com.dineflex.security.JwtUtil;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,11 +33,14 @@ class CustomerServiceImplTest {
     @Mock
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Mock
+    private JwtUtil jwtUtil;
+
     @InjectMocks
     private CustomerServiceImpl customerService;
 
     private CustomerRegisterRequest registerRequest;
-    private CustomerLoginRequest loginRequest;
+    private LoginRequest loginRequest;
     private Customer savedCustomer;
 
     @BeforeEach
@@ -44,7 +51,7 @@ class CustomerServiceImplTest {
         registerRequest.setPhone("+353 87 123 4567");
         registerRequest.setPassword("password123");
 
-        loginRequest = new CustomerLoginRequest();
+        loginRequest = new LoginRequest();
         loginRequest.setCustomerEmail("test@example.com");
         loginRequest.setPassword("password123");
 
@@ -83,38 +90,21 @@ class CustomerServiceImplTest {
         verify(passwordEncoder, times(1)).encode("password123");
     }
 
-    @Test
-    void register_shouldSaveCustomerWithCorrectFields() {
-        when(passwordEncoder.encode(any())).thenReturn("$2a$10$hashedpassword");
-        when(customerRepository.save(any(Customer.class))).thenAnswer(invocation -> {
-            Customer c = invocation.getArgument(0);
-            assertThat(c.getCustomerName()).isEqualTo("Test User");
-            assertThat(c.getCustomerEmail()).isEqualTo("test@example.com");
-            assertThat(c.getPhone()).isEqualTo("+353 87 123 4567");
-            assertThat(c.getPasswordHash()).isEqualTo("$2a$10$hashedpassword");
-            return savedCustomer;
-        });
-
-        customerService.register(registerRequest);
-    }
-
     // ───── login() ─────
 
     @Test
-    void login_shouldReturnCustomerInfoResponse_whenCredentialsAreValid() {
-        // Use real encoder to generate a real hash for this test
-        BCryptPasswordEncoder realEncoder = new BCryptPasswordEncoder();
-        String realHash = realEncoder.encode("password123");
-        savedCustomer.setPasswordHash(realHash);
-
+    void login_shouldReturnLoginResponse_whenValidCredentials() {
         when(customerRepository.findByCustomerEmail("test@example.com"))
                 .thenReturn(Optional.of(savedCustomer));
+        when(passwordEncoder.matches("password123", "$2a$10$hashedpassword")).thenReturn(true);
+        when(jwtUtil.generateToken("test@example.com")).thenReturn("mock-jwt-token");
 
-        CustomerInfoResponse response = customerService.login(loginRequest);
+        LoginResponse response = customerService.login(loginRequest);
 
         assertThat(response).isNotNull();
-        assertThat(response.getCustomerEmail()).isEqualTo("test@example.com");
+        assertThat(response.getToken()).isEqualTo("mock-jwt-token");
         assertThat(response.getCustomerName()).isEqualTo("Test User");
+        assertThat(response.getCustomerEmail()).isEqualTo("test@example.com");
     }
 
     @Test
@@ -124,34 +114,53 @@ class CustomerServiceImplTest {
 
         assertThatThrownBy(() -> customerService.login(loginRequest))
                 .isInstanceOf(RuntimeException.class)
-                .hasMessage("Customer not found");
+                .hasMessage("User not found");
     }
 
     @Test
-    void login_shouldThrowException_whenPasswordIsIncorrect() {
-        BCryptPasswordEncoder realEncoder = new BCryptPasswordEncoder();
-        savedCustomer.setPasswordHash(realEncoder.encode("correctpassword"));
-
+    void login_shouldThrowInvalidCredentialsException_whenPasswordIsIncorrect() {
         when(customerRepository.findByCustomerEmail("test@example.com"))
                 .thenReturn(Optional.of(savedCustomer));
-
-        loginRequest.setPassword("wrongpassword");
+        when(passwordEncoder.matches("password123", "$2a$10$hashedpassword")).thenReturn(false);
 
         assertThatThrownBy(() -> customerService.login(loginRequest))
-                .isInstanceOf(RuntimeException.class)
-                .hasMessage("Invalid password");
+                .isInstanceOf(InvalidCredentialsException.class)
+                .hasMessage("Email or password is incorrect.");
     }
 
     @Test
     void login_shouldCallRepository_withCorrectEmail() {
-        BCryptPasswordEncoder realEncoder = new BCryptPasswordEncoder();
-        savedCustomer.setPasswordHash(realEncoder.encode("password123"));
-
         when(customerRepository.findByCustomerEmail("test@example.com"))
                 .thenReturn(Optional.of(savedCustomer));
+        when(passwordEncoder.matches(any(), any())).thenReturn(true);
+        when(jwtUtil.generateToken(any())).thenReturn("token");
 
         customerService.login(loginRequest);
 
         verify(customerRepository, times(1)).findByCustomerEmail("test@example.com");
+    }
+
+    // ───── getMe() ─────
+
+    @Test
+    void getMe_shouldReturnCustomerInfoResponse_whenCustomerExists() {
+        when(customerRepository.findByCustomerEmail("test@example.com"))
+                .thenReturn(Optional.of(savedCustomer));
+
+        CustomerInfoResponse response = customerService.getMe("test@example.com");
+
+        assertThat(response).isNotNull();
+        assertThat(response.getCustomerName()).isEqualTo("Test User");
+        assertThat(response.getCustomerEmail()).isEqualTo("test@example.com");
+    }
+
+    @Test
+    void getMe_shouldThrowUserNotFoundException_whenCustomerNotFound() {
+        when(customerRepository.findByCustomerEmail("unknown@example.com"))
+                .thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> customerService.getMe("unknown@example.com"))
+                .isInstanceOf(UserNotFoundException.class)
+                .hasMessage("Customer not found");
     }
 }

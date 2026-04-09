@@ -1,10 +1,7 @@
 package com.dineflex.controller;
 
-import com.dineflex.dto.request.CustomerLoginRequest;
 import com.dineflex.dto.request.CustomerRegisterRequest;
 import com.dineflex.dto.response.CustomerInfoResponse;
-import com.dineflex.entity.Customer;
-import com.dineflex.repository.CustomerRepository;
 import com.dineflex.service.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 public class CustomerController {
 
     private final CustomerService customerService;
-    private final CustomerRepository customerRepository;
 
     @PostMapping("/register")
     public ResponseEntity<CustomerInfoResponse> register(@RequestBody CustomerRegisterRequest request) {
@@ -27,18 +23,12 @@ public class CustomerController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<CustomerInfoResponse> login(@RequestBody CustomerLoginRequest request) {
-        CustomerInfoResponse response = customerService.login(request);
+    @GetMapping("/me")
+    public ResponseEntity<CustomerInfoResponse> getCurrentCustomer(Authentication authentication) {
+        if (authentication == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+        CustomerInfoResponse response = customerService.getMe(authentication.getName());
         return ResponseEntity.ok(response);
     }
-
-    @GetMapping("/me")
-    public ResponseEntity<Customer> getCurrentCustomer(Authentication authentication) {
-        String email = authentication.getName();
-        return customerRepository.findByCustomerEmail(email)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
-
 }

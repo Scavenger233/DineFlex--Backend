@@ -44,8 +44,7 @@ public class SecurityConfig {
                                 "/api/offers/**",
                                 "/api/availability/**",
                                 "/oauth2/**",
-                                "/h2-console/**",
-                                "/api/customers/me"
+                                "/h2-console/**"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
