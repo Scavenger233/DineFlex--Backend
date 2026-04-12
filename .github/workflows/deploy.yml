@@ -18,9 +18,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          cache: 'maven'
 
       - name: Run tests
-        run: mvn test
+        run: mvn test --no-transfer-progress -B
 
       - name: Build Docker image
         run: |
