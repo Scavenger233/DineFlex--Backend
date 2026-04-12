@@ -21,7 +21,11 @@ jobs:
           cache: 'maven'
 
       - name: Run tests
-        run: mvn test --no-transfer-progress -B
+        run: mvn test --no-transfer-progress -B -e
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          DINEFLEX_JWT_SECRET: ${{ secrets.DINEFLEX_JWT_SECRET }}
 
       - name: Build Docker image
         run: |
