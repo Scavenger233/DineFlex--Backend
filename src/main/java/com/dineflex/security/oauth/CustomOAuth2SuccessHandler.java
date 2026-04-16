@@ -7,6 +7,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -15,7 +16,6 @@ import org.springframework.stereotype.Component;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +25,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
     private final CustomerRepository customerRepository;
 
     // Match the one in application.properties (frontend page to redirect to)
-    private final String REDIRECT_URI = "http://localhost:8081/oauth2/redirect";
+    @Value("${dineflex.oauth2.redirect-uri}")
+    private String REDIRECT_URI;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request,
