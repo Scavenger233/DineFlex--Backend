@@ -26,24 +26,19 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public Booking createBooking(BookingRequest request) {
-        System.out.println("📨 [Booking Start] Email from frontend: " + request.getCustomerEmail());
 
         Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
                 .orElseThrow(() -> new RuntimeException("Restaurant not found"));
 
-        System.out.println("✅ Found restaurant: " + restaurant.getName());
 
-        System.out.println("🔍 Checking if customer exists in DB for email: " + request.getCustomerEmail());
 
         Customer customer = customerRepository.findByCustomerEmail(request.getCustomerEmail())
                 .orElseThrow(() -> new UserNotFoundException("Customer not found"));
 
-        System.out.println("✅ Customer found: ID=" + customer.getId() + ", Name=" + customer.getCustomerName());
 
         LocalDate date = LocalDate.parse(request.getDate());
         LocalTime time = LocalTime.parse(request.getTime());
 
-        System.out.println("🔍 Checking slot for date=" + date + " and time=" + time);
 
         AvailabilitySlot slot = availabilitySlotRepository
                 .findByRestaurantIdAndDateAndTime(request.getRestaurantId(), date, time)
@@ -53,7 +48,6 @@ public class BookingServiceImpl implements BookingService {
             throw new RuntimeException("Slot not available");
         }
 
-        System.out.println("✅ Slot available. Proceeding with booking...");
 
         slot.setAvailable(false);
         availabilitySlotRepository.save(slot);
