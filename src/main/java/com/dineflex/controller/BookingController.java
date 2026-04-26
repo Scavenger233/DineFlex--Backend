@@ -7,6 +7,7 @@ import com.dineflex.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 import com.dineflex.entity.Booking;
 
 @RestController
@@ -24,7 +25,8 @@ public class BookingController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BookingResponse> getBooking(@PathVariable Long id) {
-        return ResponseEntity.ok(bookingService.getBookingById(id));
+    public ResponseEntity<BookingResponse> getBooking(@PathVariable Long id, Authentication authentication) {
+        String customerEmail = authentication.getName();
+        return ResponseEntity.ok(bookingService.getBookingById(id, customerEmail));
     }
 }

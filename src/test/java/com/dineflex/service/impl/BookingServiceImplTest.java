@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -183,7 +184,7 @@ class BookingServiceImplTest {
     void getBookingById_shouldReturnBookingResponse_whenBookingExists() {
         when(bookingRepository.findById(1L)).thenReturn(Optional.of(savedBooking));
 
-        BookingResponse response = bookingService.getBookingById(1L);
+        BookingResponse response = bookingService.getBookingById(1L, "test@example.com");
 
         assertThat(response).isNotNull();
         assertThat(response.getId()).isEqualTo(1L);
@@ -196,8 +197,17 @@ class BookingServiceImplTest {
     void getBookingById_shouldThrowException_whenBookingNotFound() {
         when(bookingRepository.findById(99L)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> bookingService.getBookingById(99L))
+        assertThatThrownBy(() -> bookingService.getBookingById(99L, "test@example.com"))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("Booking not found");
+    }
+
+    @Test
+    void getBookingById_shouldThrowException_whenCustomerDoesNotOwnBooking() {
+        when(bookingRepository.findById(1L)).thenReturn(Optional.of(savedBooking));
+
+        assertThatThrownBy(() -> bookingService.getBookingById(1L, "other@example.com"))
+            .isInstanceOf(AccessDeniedException.class)
+            .hasMessage("This booking does not belong to the customer");
     }
 }
