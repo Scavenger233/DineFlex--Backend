@@ -6,5 +6,5 @@ import com.dineflex.entity.Booking;
 
 public interface BookingService {
     Booking createBooking(BookingRequest request);
-    BookingResponse getBookingById(Long id);
+    BookingResponse getBookingById(Long id, String customerEmail);
 }

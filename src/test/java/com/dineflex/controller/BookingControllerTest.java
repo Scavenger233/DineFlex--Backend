@@ -26,6 +26,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -140,7 +142,7 @@ class BookingControllerTest {
 
     @Test
     void getBookingById_shouldReturn200_whenFound() throws Exception {
-        when(bookingService.getBookingById(1L)).thenReturn(bookingResponse);
+        when(bookingService.getBookingById(eq(1L), anyString())).thenReturn(bookingResponse);
 
         mockMvc.perform(get("/api/bookings/1"))
                 .andExpect(status().isOk())
@@ -151,7 +153,7 @@ class BookingControllerTest {
 
     @Test
     void getBookingById_shouldReturn500_whenNotFound() throws Exception {
-        when(bookingService.getBookingById(99L))
+        when(bookingService.getBookingById(eq(99L), anyString()))
                 .thenThrow(new IllegalArgumentException("Booking not found"));
 
         mockMvc.perform(get("/api/bookings/99"))

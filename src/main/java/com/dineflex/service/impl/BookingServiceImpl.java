@@ -4,12 +4,12 @@ import com.dineflex.dto.request.BookingRequest;
 import com.dineflex.dto.response.BookingResponse;
 import com.dineflex.entity.*;
 import com.dineflex.entity.enums.BookingStatus;
-import com.dineflex.entity.enums.BookingStatus;
 import com.dineflex.exception.UserNotFoundException;
 import com.dineflex.repository.*;
 import com.dineflex.service.BookingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.security.access.AccessDeniedException;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -69,9 +69,14 @@ public class BookingServiceImpl implements BookingService {
 
 
     @Override
-    public BookingResponse getBookingById(Long bookingId) {
+    public BookingResponse getBookingById(Long bookingId, String customerEmail) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found"));
+
+        if (!booking.getCustomer().getCustomerEmail().equals(customerEmail)) {
+            throw new AccessDeniedException("This booking does not belong to the customer");
+        }
+
         return BookingResponse.fromEntity(booking);
     }
 
